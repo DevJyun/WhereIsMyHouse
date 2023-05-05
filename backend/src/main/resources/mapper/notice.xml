@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.house.model.dao.NoticeDao">
+
+	<sql id='searchcon'>
+		<if  test="word != null and word !='' ">
+			<choose>
+				<when test=" key =='no'">
+					no = #{word}
+				</when>
+				<when test=" key =='title'">
+					title like  concat('%',#{word},'%') 
+				</when>
+				<when test=" key =='content'">
+					content like  concat('%',#{word},'%') 
+				</when>
+			</choose>
+		</if>
+	</sql>
+	
+	<select id="searchAll" parameterType="Map" resultType="Notice">
+		select * from notice
+		<where>
+			<include refid="searchcon"/>	
+		</where>
+	</select>
+	
+	<select id="searchByNo" parameterType="string"	resultType="Notice">
+		select * from notice where no = #{no}
+	</select>
+	
+	<insert id='insert' parameterType="Notice">
+		insert into notice(id, title, content)
+		values (#{id}, #{title}, #{content})
+	</insert>
+	
+	<update id='update' parameterType="Notice">
+		update notice set id = #{id} ,title = #{title} ,content = #{content}
+		where no = #{no}
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from notice where no = #{no} 
+	</delete>
+	
+	<update id="increaseHit" parameterType="string">
+		update notice set hit = hit+1
+		where no = #{no}
+	</update>
+	
+	<select id="pagination" parameterType="Map" resultType="Notice">
+		select * from notice
+		<where>
+			<include refid="searchcon"/>	
+		</where>
+		limit #{start},#{len}
+	</select>
+	
+</mapper>

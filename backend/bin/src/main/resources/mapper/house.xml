@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.house.model.dao.HouseDao">
+	<select id="searchByApt" parameterType="string" resultType="House">
+		select * from houseinfo info 
+		join housedeal deal on info.aptCode = deal.aptCode 
+		where aptName like CONCAT('%',#{aptName},'%')
+	</select>
+	
+	<select id="searchByDong" parameterType="string" resultType="House">
+		select * from houseinfo info 
+		join housedeal deal on info.aptCode = deal.aptCode 
+		where dongCode=#{dongCode}
+	</select>
+	
+	<select id="searchByNo" parameterType="int" resultType="House">
+		select * from houseinfo info 
+		join housedeal deal on info.aptCode = deal.aptCode 
+		where no=#{no}
+	</select>
+	
+	<select id="searchAddressName" parameterType="string" resultType="House">
+		select * from dongcode where dongCode=#{dongCode}
+	</select>
+	
+	<select id="pagination" parameterType="Map" resultType="House">
+		select * from houseinfo info 
+		join housedeal deal on info.aptCode = deal.aptCode 
+		where aptName like CONCAT('%',#{aptName},'%') limit #{start},#{len}
+	</select>
+	
+	<select id="dongPagination" parameterType="Map" resultType="House">
+		select * from houseinfo info 
+		join housedeal deal on info.aptCode = deal.aptCode 
+		where dongCode=#{dongCode} limit #{start},#{len}
+	</select>
+</mapper>
